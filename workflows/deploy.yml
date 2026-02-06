@@ -1,0 +1,79 @@
+name: Update Tracking Data
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    - run: |
+        echo "${{ secrets.INCELS_COOKIES }}" > cookies.txt
+        node background-tracker.js
+        rm cookies.txt
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add tracking-data.json
+        git diff --quiet || git commit -m "Update data" && git push
+```
+
+4. Click **"Commit new file"**
+
+---
+
+### **Step 5: Add Your Cookies (Securely)** (30 seconds)
+
+1. Go to **Settings** → **Secrets and variables** → **Actions**
+2. Click **"New repository secret"**
+3. Name: `INCELS_COOKIES`
+4. Value: Paste your cookies:
+```
+   xf_user=59719%2CYWotAo_Jm0vhz0Bdf22JVEiazdTkHIKlasC-ZEmv; xf_session=tBqpefecYhvBemOvJnxB8rzr4cctE7lT; xf_csrf=T8JwXdIYK-0X3tlQ
+```
+5. Click **"Add secret"**
+
+---
+
+### **Step 6: Enable GitHub Pages** (30 seconds)
+
+1. Go to **Settings** → **Pages**
+2. Under "Source":
+   - Branch: **`main`** (or `gh-pages` if it exists)
+   - Folder: **`/ (root)`**
+3. Click **"Save"**
+
+**Wait 1-2 minutes...**
+
+---
+
+### **Step 7: Access Your Live Site!** 🎉
+
+Your site is now live at:
+```
+https://YOUR-USERNAME.github.io/postmaxxers-moe/
+```
+
+---
+
+## 🌐 **Add Custom Domain (postmaxxers.moe)** - Optional
+
+### In GitHub:
+1. **Settings** → **Pages** → Custom domain
+2. Enter: `postmaxxers.moe`
+3. Save
+
+### At Your Domain Registrar:
+Add these DNS records:
+```
+Type: A       Name: @      Value: 185.199.108.153
+Type: A       Name: @      Value: 185.199.109.153
+Type: A       Name: @      Value: 185.199.110.153
+Type: A       Name: @      Value: 185.199.111.153
+Type: CNAME   Name: www    Value: YOUR-USERNAME.github.io
