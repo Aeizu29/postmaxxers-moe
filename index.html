@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POSTMAXXERS.MOE - Live Tracking</title>
+    <!-- Copy ALL the styles from postmaxxers-final.html -->
+</head>
+<body>
+    <div class="header">POSTMAXXERS.MOE</div>
+    
+    <div id="notificationContainer"></div>
+    
+    <div class="status">
+        <span class="live-indicator"></span>
+        <span id="statusText">Loading...</span>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div class="section-title">LEADERBOARD</div>
+            <div id="leaderboard" class="loading">Loading...</div>
+            <div class="update-time" id="updateTime"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">TOP 10 POSTMAXXERS OF THE DAY</div>
+            <div id="topPostmaxxer" class="loading">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        // Copy ALL the JavaScript from postmaxxers-final.html
+        // BUT change the image proxy to:
+        
+        function getProxyImageUrl(imageUrl) {
+            if (!imageUrl) return imageUrl;
+            let fullUrl = imageUrl;
+            if (imageUrl.startsWith('//')) fullUrl = 'https:' + imageUrl;
+            if (imageUrl.startsWith('/')) fullUrl = 'https://incels.is' + imageUrl;
+            
+            // Use free CORS proxy
+            return `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
+        }
+        
+        // And change fetchLeaderboard to load from tracking-data.json:
+        async function fetchLeaderboard() {
+            const response = await fetch('/tracking-data.json');
+            const data = await response.json();
+            displayLeaderboard(data.currentData);
+            displayTopPostmaxxer(data.currentData);
+        }
+    </script>
+</body>
+</html>
